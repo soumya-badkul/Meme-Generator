@@ -1,0 +1,364 @@
+<style>
+
+.imagess{
+    cursor: pointer;
+}
+
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ JSGlue.include() }}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" >
+    <title>Meme Banao!</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body style="background-color:rgb(251, 249, 249)">
+
+    <div style="padding-top: 50px;">
+        <h4 style="text-align:center; color:indianred; text-shadow: lightcoral;"><p class="card-text"> <b>MEMES BANATE RHO BACHALOG :)</b> </p></h4>
+</div>
+
+    <div class="container"  style="padding-top: 50px; padding-left: 30px;padding-right: 30px;">
+        <ul class="nav nav-tabs" style="margin-bottom: 0em;">
+            <li class="nav-item">
+              <a class="nav-link active" href="#" id="user" onclick="navlinkuser()">Choose image</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"  id="trending" onclick="navlinktren()">Trending Images</a>
+            </li>
+          </ul>
+       <div class="row">
+           <div class="col-sm-8">
+        <div class="card w-80">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <label class="car-text">Image Preview:</label>
+                        <img id="image-preview" style="object-fit:fill;" width="250px" height="330px">
+            </div>
+     
+<!-- user Upload page -->
+
+            <div class="col-md-3 userup">
+                <form method="post" id="meme-form" runat="server">
+                    <label class="card-text">Upload Image:</label>
+                    <input type="file" accept="image/*" name="File1" id="File1" class="form-group" onchange="preview_image(event)">
+                <label class="card-text">Top Text:</label><br>
+                <input type="text" class="form-group" id="top-text" name="top-text" style="width:250%;"><br>
+                <label class="card-text">Bottom Text:</label><br>
+                <input type="text" class="form-group" id="Bottom-text" name="Bottom-text" style="width:250%;">
+                <input type="submit" value="Generate meme!" class="btn btn-outline-success btn-lg">
+            </form>
+            </div>
+
+<!-- ends user upload form -->
+
+<!-- trending upload -->
+
+<div class="col-md-5 trendingup" style="display: none;">
+    <div class="row imagess">
+    <img src="{{url_for('static', filename='inputs/123.jpg')}}" style="padding: 3px;" alt=".." height="70px" width="70px" onclick="a123()">
+    <img src="{{url_for('static', filename='inputs/cat.jpg')}}" style="padding: 3px;" alt=".." height="70px" width="70px" onclick="cat()">
+    <img src="{{url_for('static', filename='inputs/yesno.jfif')}}" style="padding: 3px;" alt=".." height="70px" width="70px" onclick="yesno()">
+    </div><br>
+<!-- 123 -->
+    <div class="trending123hs">
+    <form method="post" id="trending123" runat="server">
+    <label class="card-text">left Text:</label><br>
+    <input type="text" class="form-group" id="left-text" name="left-text" style="width:120%;"><br>
+    <label class="card-text">middle Text:</label><br>
+    <input type="text" class="form-group" id="middle-text" name="middle-text" style="width:120%;">
+    <label class="card-text">right Text:</label><br>
+    <input type="text" class="form-group" id="right-text" name="right-text" style="width:120%;">
+    <input type="submit" value="Generate meme!" class="btn btn-outline-success btn-lg">
+</form>
+</div>
+
+<!-- ends 123 -->
+
+<!-- cat -->
+
+<div class="trendingcaths" style="display: none;">
+    <form method="post" id="trendingcat" runat="server">
+    <label class="card-text">left Text:</label><br>
+    <input type="text" class="form-group" id="left-text" name="left-text" style="width:120%;"><br>
+    <label class="card-text">right Text:</label><br>
+    <input type="text" class="form-group" id="right-text" name="right-text" style="width:120%;">
+    <input type="submit" value="Generate meme!" class="btn btn-outline-success btn-lg">
+</form>
+</div>
+
+<!-- ends cat -->
+
+<!-- yesno -->
+
+<div class="trendingyesnohs" style="display: none;">
+    <form method="post" id="trendingyesno" runat="server">
+    <label class="card-text">top Text:</label><br>
+    <input type="text" class="form-group" id="top-text" name="top-text" style="width:120%;"><br>
+    <label class="card-text">bottom Text:</label><br>
+    <input type="text" class="form-group" id="bottom-text" name="bottom-text" style="width:120%;">
+    <input type="submit" value="Generate meme!" class="btn btn-outline-success btn-lg">
+</form>
+</div>
+
+<!-- ends yesno -->
+
+
+</div>
+
+<!-- ends trending upload -->
+
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card w-80">
+            <div class="card-body">
+                <p class="card-text">Generated Meme Preview:</p>
+                <img id="loading" src="{{url_for('static', filename='')}}" alt="">
+                <img src="" id="meme-preview" alt="" style="display:none;" height="330px" width="300px"><br><br>
+                <div id="download" style="display: none;">
+                <a href="" download id="downloadmeme">
+                <center><input type="button" value="Download" class="btn btn-outline-info btn-lg"></center>
+                </a>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    </div>
+
+
+
+    
+</body>
+
+<script type='text/javascript'>
+function preview_image(event) 
+{
+ var reader = new FileReader();
+ reader.onload = function()
+ {
+  var output = document.getElementById('image-preview');
+  output.src = reader.result;
+ }
+ reader.readAsDataURL(event.target.files[0]);
+}
+
+    $('#meme-form').on('submit', function (e) {
+       	e.preventDefault();
+        $('#meme-preview').attr('src',' ');
+		$('#loading').show();
+
+		var form = $("#meme-form");
+		var params = form.serializeArray();
+
+		var files = $("#File1")[0].files;
+
+		var ele = $('#File1');
+		var pop = ele.attr("name");
+		// console.log(files[0])
+		var formData = new FormData();
+
+		formData.append(pop, files[0]);
+		$(params).each(function (index, element) {
+			formData.append(element.name, element.value);
+		});
+
+		for (var key of formData.entries()) {
+			console.log(key[0] + ', ' + key[1]);
+		}
+
+
+		$.ajax({
+			url: '/memegenerator',
+			type: "POST",
+			contentType: false,
+			processData: false,
+			cache: false,
+			data: formData,
+			success: function (data, status) {
+                $("#meme-form").trigger('reset');
+				$('#loading').hide();
+                $('#download').show();
+					var profile = data.filename;
+					var path = Flask.url_for("static", { "filename": 'results/' + profile });
+                    $('#image-preview').attr('src'," ");
+                    $('#meme-preview').attr('src',path);
+                    $('#downloadmeme').attr('href',path);
+					$('#meme-preview').show();
+			}
+		});
+	});
+
+    function navlinkuser(){
+        $('#user').removeClass('nav-link');
+        $('#user').addClass('nav-link active');
+        $('#trending').removeClass('nav-link active');
+        $('#trending').addClass('nav-link');
+        $('.trendingup').hide();
+        $('.userup').show();
+        $('#image-preview').attr('src'," ");
+    }
+
+    function navlinktren(){
+        $('#user').removeClass('nav-link active');
+        $('#user').addClass('nav-link');
+        $('#trending').removeClass('nav-link');
+        $('#trending').addClass('nav-link active');
+        $('.trendingup').show();
+        $('.userup').hide();
+        var path = Flask.url_for("static", { "filename": 'inputs/123.jpg' });
+					console.log(path);
+                    $('#image-preview').attr('src',path);
+    }
+
+    $('#trending123').on('submit', function (e) {
+       	e.preventDefault();
+        $('#meme-preview').attr('src',' ');
+		$('#loading').show();
+        var form = $("#trending123");
+        var params = form.serializeArray();
+		var formData = new FormData();
+		$(params).each(function (index, element) {
+			formData.append(element.name, element.value);
+		});
+		$.ajax({
+			url: '/memegenerator123',
+			type: "POST",
+			contentType: false,
+			processData: false,
+			cache: false,
+			data: formData,
+			success: function (data, status) {
+                $("#trending123").trigger('reset');
+				$('#loading').hide();
+                $('#download').show();
+					var profile = data.filename;
+					console.log(profile);
+					// var path = Flask.url_for("static", { "filename": 'images/' + profile });
+					// console.log(path);
+					var path = Flask.url_for("static", { "filename": 'results/' + profile });
+					console.log(path);
+                    $('#meme-preview').attr('src',path);
+                    $('#downloadmeme').attr('href',path);
+					$('#meme-preview').show();
+			}
+		});
+	});
+
+    function a123(){
+        $('.trendingcaths').hide();
+        $('.trendingyesnohs').hide();
+        $('.trending123hs').show();
+        $('#image-preview').attr('src',Flask.url_for("static", {"filename": 'inputs/123.jpg'}));
+    }
+
+    $('#trendingcat').on('submit', function (e) {
+		e.preventDefault();
+        $('#meme-preview').attr('src',' ');
+		$('#loading').show();
+        var form = $("#trendingcat");
+        var params = form.serializeArray();
+		var formData = new FormData();
+		$(params).each(function (index, element) {
+			formData.append(element.name, element.value);
+		});
+
+		$.ajax({
+			url: '/memegeneratorcat',
+			type: "POST",
+			contentType: false,
+			processData: false,
+			cache: false,
+			data: formData,
+			success: function (data, status) {
+                $("#trendingcat").trigger('reset');
+				console.log(data);
+				$('#loading').hide();
+                $('#download').show();
+					var profile = data.filename;
+					console.log(profile);
+					// var path = Flask.url_for("static", { "filename": 'images/' + profile });
+					// console.log(path);
+					var path = Flask.url_for("static", { "filename": 'results/' + profile });
+					console.log(path);
+                    $('#meme-preview').attr('src',path);
+                    $('#downloadmeme').attr('href',path);
+					$('#meme-preview').show();
+			}
+		});
+	});
+
+    function cat(){
+        $('.trendingcaths').show();
+        $('.trendingyesnohs').hide();
+        $('.trending123hs').hide();
+        $('#image-preview').attr('src',Flask.url_for("static", {"filename": 'inputs/cat.jpg'}));
+    }
+
+    $('#trendingyesno').on('submit', function (e) {
+        
+		e.preventDefault();
+        $('#meme-preview').attr('src',' ');
+		$('#loading').show();
+        var form = $("#trendingyesno");
+        var params = form.serializeArray();
+		var formData = new FormData();
+
+
+		$(params).each(function (index, element) {
+			formData.append(element.name, element.value);
+		});
+
+        
+		for (var key of formData.entries()) {
+			console.log(key[0] + ', ' + key[1]);
+		}
+
+		$.ajax({
+			url: '/memegeneratoryesno',
+			type: "POST",
+			contentType: false,
+			processData: false,
+			cache: false,
+			data: formData,
+			success: function (data, status) {
+                $("#trendingyesno").trigger('reset');
+				console.log(data);
+				$('#loading').hide();
+                $('#download').show();
+					var profile = data.filename;
+					console.log(profile);
+					// var path = Flask.url_for("static", { "filename": 'images/' + profile });
+					// console.log(path);
+					var path = Flask.url_for("static", { "filename": 'results/' + profile });
+					console.log(path);
+                    $('#meme-preview').attr('src',path);
+                    $('#downloadmeme').attr('href',path);
+					$('#meme-preview').show();
+			}
+		});
+	});
+
+    function yesno(){
+        $('.trendingcaths').hide();
+        $('.trendingyesnohs').show();
+        $('.trending123hs').hide();
+        $('#image-preview').attr('src',Flask.url_for("static", {"filename": 'inputs/yesno.jfif'}));
+    }
+
+
+
+    </script>
+</html>
